@@ -1,0 +1,181 @@
+package com.example.myapplication
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen() {
+    var searchText by remember { mutableStateOf("") }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(horizontal = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            drawCircle(
+                                color = Color(0xFFFF6D00),
+                                radius = size.minDimension / 2,
+                                alpha = 0.1f
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Outlined.LocationOn,
+                            contentDescription = "Location",
+                            tint = Color(0xFFFF6D00)
+                        )
+                    }
+                },
+                title = {
+                    Column {
+                        Text("Deliver to",
+                            fontSize = 15.sp,
+                            color = Color.Gray)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Home",
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.KeyboardArrowDown,
+                                null)
+                        }
+                    }
+                },
+                actions = {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(horizontal = 5.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            drawCircle(
+                                color = Color(0xFF858181),
+                                radius = size.minDimension / 2,
+                                alpha = 0.1f
+                            )
+                        }
+                        Icon(Icons.Outlined.Notifications,
+                             null)
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        Column(modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+        ) {
+
+            Spacer(modifier = Modifier
+                .height(10.dp))
+
+            Box (modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = Color(0xFFEDEDED))
+            )
+
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 15.dp)
+            ) {
+
+                Spacer(modifier = Modifier
+                    .height(15.dp))
+
+                Text(text = "Good Morning, Alex!",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier
+                    .height(5.dp))
+                Text(text = "What would you like to eat?",
+                    color = Color.Gray,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 17.sp)
+
+                Spacer(modifier = Modifier
+                    .height(15.dp))
+
+                Box(modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .height(55.dp)
+                    .background(color = Color(0xFFECE5E5),
+                        shape = RoundedCornerShape(25.dp)
+                    ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row (
+                        modifier = Modifier
+                            .padding(10.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon (
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "Search",
+                            tint = Color.Gray
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        BasicTextField(
+                            value = searchText,
+                            onValueChange = { searchText = it },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            ),
+                            decorationBox = { innerTextField ->
+                                if (searchText.isEmpty()) {
+                                    Text(
+                                        text = "Search restaurants & dishes...",
+                                        color = Color.DarkGray,
+                                        fontSize = 16.sp
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        )
+                    }
+                }
+                //Card
+            }
+        }
+    }
+}

@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -19,37 +15,43 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.model.Filters
 
+// Composable to display a single filter option as a selectable chip
 @Composable
 fun FilterOptionUI(option: Filters) {
 
+    // State to track whether this filter option is selected
+    // By default, "All" is selected
     var isSelected by remember { mutableStateOf(option.name == "All") }
 
+    // Box to create a rounded, clickable chip
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(20.dp)) // Rounded corners
             .background(
-                if (isSelected){
+                // Orange background if selected, light gray if not
+                if (isSelected) {
                     Color(0xFFFF6D00)
-                }
-                else{
+                } else {
                     Color(0xFFECE5E5)
                 }
             )
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp) // Padding inside chip
             .clickable {
+                // Toggle selection on click
                 isSelected = !isSelected
             }
     ) {
+        // Filter name text
         Text(
             text = option.name,
-            color = if (isSelected){
-                Color.White
-            }
-            else {
-                Color.Gray
+            color = if (isSelected) {
+                Color.White // White text if selected
+            } else {
+                Color.Gray // Gray text if not selected
             },
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
     }
 }
+

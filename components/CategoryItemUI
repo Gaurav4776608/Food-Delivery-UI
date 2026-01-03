@@ -1,11 +1,7 @@
 package com.example.myapplication.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -18,29 +14,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.model.Category
 
-
+// Composable to display a single category item in the horizontal category list
 @Composable
 fun CategoryItemUI(category: Category) {
+    // Column to vertically align the icon and category name
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+        // Circular background box for the category icon
         Box(
             modifier = Modifier
-                .size(64.dp)
-                .background(Color(0xFFFFF1E6), CircleShape),
-            contentAlignment = Alignment.Center
+                .size(64.dp) // Size of the circular container
+                .background(Color(0xFFFFF1E6), CircleShape), // Light background color
+            contentAlignment = Alignment.Center // Center the icon inside the circle
         ) {
+            // Category icon in the center
             Icon(
-                imageVector = category.icon,
-                contentDescription = category.name,
-                tint = Color(0xFFFF6A00)
+                imageVector = category.icon, // Icon from the Category object
+                contentDescription = category.name, // Accessibility description
+                tint = Color(0xFFFF6A00) // Icon color
             )
         }
 
+        // Spacer to add vertical space between icon and text
         Spacer(modifier = Modifier.height(5.dp))
 
+        // Category name text
         Text(
-            text = category.name,
+            text = category.name, // Name of the category
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold
         )
     }
 }
+

@@ -2,7 +2,8 @@ package com.example.myapplication.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
+// Data class to represent a food category in the app
 data class Category(
-    val name: String,
-    val icon: ImageVector
+    val name: String,        // Name of the category (e.g., "Pizza", "Burger")
+    val icon: ImageVector    // Icon representing the category, used in the UI
 )

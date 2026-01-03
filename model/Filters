@@ -1,0 +1,6 @@
+package com.example.myapplication.model
+
+// Data class to represent a filter option in the app
+data class Filters(
+    val name: String // Name of the filter (e.g., "Veg", "Non-Veg", "Fast Delivery")
+)

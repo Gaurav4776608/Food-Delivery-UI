@@ -3,34 +3,15 @@ package com.example.myapplication.screens
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.Eco
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material.icons.filled.Icecream
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.LocalBar
-import androidx.compose.material.icons.filled.LocalPizza
-import androidx.compose.material.icons.filled.RamenDining
-import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -46,12 +27,13 @@ import com.example.myapplication.model.Category
 import com.example.myapplication.components.RestaurantCard
 import com.example.myapplication.components.CategoryItemUI
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+    // State to hold the text entered in the search bar
     var searchText by remember { mutableStateOf("") }
 
+    // List of categories with their names and icons
     val categories = listOf(
         Category("Burger", Icons.Default.Fastfood),
         Category("Pizza", Icons.Default.LocalPizza),
@@ -63,10 +45,13 @@ fun HomeScreen() {
         Category("Ice Cream", Icons.Default.Icecream)
     )
 
+    // Scaffold provides basic material design structure with topBar, bottomBar, etc.
     Scaffold(
         topBar = {
+            // TopAppBar with location, greeting, and notification icons
             TopAppBar(
                 navigationIcon = {
+                    // Location icon with subtle circle background
                     Box(
                         modifier = Modifier
                             .size(50.dp)
@@ -88,6 +73,7 @@ fun HomeScreen() {
                     }
                 },
                 title = {
+                    // Column to display delivery info: "Deliver to" and location name
                     Column {
                         Text(
                             "Deliver to",
@@ -108,6 +94,7 @@ fun HomeScreen() {
                     }
                 },
                 actions = {
+                    // Notifications icon with subtle circle background
                     Box(
                         modifier = Modifier
                             .size(50.dp)
@@ -130,13 +117,14 @@ fun HomeScreen() {
             )
         }
     ) { innerPadding ->
+        // Main content area wrapped in vertical scroll
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-
+            // Thin divider line under the TopAppBar
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -150,21 +138,18 @@ fun HomeScreen() {
                     .padding(horizontal = 15.dp)
             ) {
 
-                Spacer(
-                    modifier = Modifier
-                        .height(7.dp)
-                )
+                Spacer(modifier = Modifier.height(7.dp))
 
+                // Greeting text
                 Text(
                     text = "Good Morning, Alex!",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(
-                    modifier = Modifier
-                        .height(2.dp)
-                )
+                Spacer(modifier = Modifier.height(2.dp))
+
+                // Subheading prompting user
                 Text(
                     text = "What would you like to eat?",
                     color = Color.Gray,
@@ -172,11 +157,9 @@ fun HomeScreen() {
                     fontSize = 17.sp
                 )
 
-                Spacer(
-                    modifier = Modifier
-                        .height(10.dp)
-                )
+                Spacer(modifier = Modifier.height(10.dp))
 
+                // Search bar with icon and placeholder text
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -188,8 +171,7 @@ fun HomeScreen() {
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
-                        modifier = Modifier
-                            .padding(10.dp),
+                        modifier = Modifier.padding(10.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Icon(
@@ -200,6 +182,7 @@ fun HomeScreen() {
 
                         Spacer(modifier = Modifier.width(8.dp))
 
+                        // BasicTextField for search input
                         BasicTextField(
                             value = searchText,
                             onValueChange = { searchText = it },
@@ -210,6 +193,7 @@ fun HomeScreen() {
                                 color = Color.Black
                             ),
                             decorationBox = { innerTextField ->
+                                // Placeholder text when search bar is empty
                                 if (searchText.isEmpty()) {
                                     Text(
                                         text = "Search restaurants & dishes...",
@@ -222,22 +206,26 @@ fun HomeScreen() {
                         )
                     }
                 }
-                Spacer(modifier = Modifier
-                    .height(15.dp))
 
-                Box(modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth()
-                    .background(brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            Color(0xFFFF7A18),
-                            Color(0xFFFFA94D))),
-                        shape = RoundedCornerShape(30.dp)
-                    )
+                Spacer(modifier = Modifier.height(15.dp))
+
+                // Promotional banner with gradient background
+                Box(
+                    modifier = Modifier
+                        .height(150.dp)
+                        .fillMaxWidth()
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFFFF7A18),
+                                    Color(0xFFFFA94D)
+                                )
+                            ),
+                            shape = RoundedCornerShape(30.dp)
+                        )
                 ) {
-                    Column(modifier = Modifier
-                        .padding(horizontal = 15.dp, vertical = 15.dp)
-                    ) {
+                    Column(modifier = Modifier.padding(horizontal = 15.dp, vertical = 15.dp)) {
+                        // Discount tag
                         Box(
                             modifier = Modifier
                                 .background(
@@ -254,64 +242,79 @@ fun HomeScreen() {
                             )
                         }
 
-                        Spacer(modifier = Modifier
-                            .height(15.dp)
-                        )
+                        Spacer(modifier = Modifier.height(15.dp))
 
-                        Text(text = "Free Delivery Week!",
+                        // Main banner title
+                        Text(
+                            text = "Free Delivery Week!",
                             fontWeight = FontWeight.Bold,
                             fontSize = 30.sp,
                             color = Color.White
                         )
 
-                        Spacer(modifier = Modifier
-                            .height(10.dp)
-                        )
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                        Text(text = "On orders above ₹150. Use code: FREEDEL",
+                        // Banner subtitle / description
+                        Text(
+                            text = "On orders above ₹150. Use code: FREEDEL",
                             color = Color(0xFFFFF1E6),
                             fontWeight = FontWeight.W400,
-                            fontSize = 15.sp)
+                            fontSize = 15.sp
+                        )
                     }
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+
+                // Section header for categories
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Categories",
+                    Text(
+                        text = "Categories",
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 25.sp)
-
-                    Text(text = "See all",
+                        fontSize = 25.sp
+                    )
+                    Text(
+                        text = "See all",
                         fontWeight = FontWeight.W400,
-                        color = Color(0xFFFF7A18))
+                        color = Color(0xFFFF7A18)
+                    )
                 }
+
+                // Horizontal list of categories using LazyRow
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(categories) { category ->
-                        CategoryItemUI(category)
+                        CategoryItemUI(category) // Composable that displays each category
                     }
                 }
 
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 10.dp),
+                // Section header for popular restaurants
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Popular Near You",
+                    Text(
+                        text = "Popular Near You",
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp)
-
-                    Text(text = "See all",
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = "See all",
                         fontWeight = FontWeight.W400,
-                        color = Color(0xFFFF7A18))
+                        color = Color(0xFFFF7A18)
+                    )
                 }
 
+                // List of restaurant cards
                 RestaurantCard(
                     imageRes = R.drawable.chicken_biryani,
                     name = "Flavours Of India",
@@ -348,6 +351,3 @@ fun HomeScreen() {
         }
     }
 }
-
-
-

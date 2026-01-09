@@ -1,0 +1,12 @@
+package com.example.myapplication.model
+
+data class Restaurant(
+    val name: String,
+    val rating: Float,
+    val country: String,
+    val food: String,
+    val type: String,
+    val deliveryTime: String,
+    val deliveryFee: String,
+    val image: Int,
+)

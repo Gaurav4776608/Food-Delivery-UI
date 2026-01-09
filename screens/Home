@@ -3,14 +3,21 @@ package com.example.myapplication.screens
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,20 +27,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import com.example.myapplication.R
-import com.example.myapplication.model.Category
-import com.example.myapplication.components.RestaurantCard
 import com.example.myapplication.components.CategoryItemUI
+import com.example.myapplication.components.RestaurantCard
+import com.example.myapplication.model.Category
+import com.example.myapplication.model.Restaurant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    // State to hold the text entered in the search bar
+
     var searchText by remember { mutableStateOf("") }
 
-    // List of categories with their names and icons
     val categories = listOf(
         Category("Burger", Icons.Default.Fastfood),
         Category("Pizza", Icons.Default.LocalPizza),
@@ -45,17 +50,19 @@ fun HomeScreen() {
         Category("Ice Cream", Icons.Default.Icecream)
     )
 
-    // Scaffold provides basic material design structure with topBar, bottomBar, etc.
+    val restaurants = listOf(
+        Restaurant("Flavours of India", 5.0f, "India", "Biryani", "Best Food", "20-25 min", "Free Delivery", R.drawable.chicken_biryani),
+        Restaurant("Meethon Ka Ghar", 4.7f, "India", "Kheer", "Dessert", "15-20 min", "₹40", R.drawable.kheer),
+        Restaurant("Burger Plaza", 4.7f, "America", "Burger", "Fast Food", "15-20 min", "₹25", R.drawable.chicken_burger),
+        Restaurant("Pizza Roma", 4.9f, "Italy", "Pizza", "Traditional Food", "20-25 min", "₹25", R.drawable.pizza)
+    )
+
     Scaffold(
         topBar = {
-            // TopAppBar with location, greeting, and notification icons
             TopAppBar(
                 navigationIcon = {
-                    // Location icon with subtle circle background
                     Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .padding(horizontal = 5.dp),
+                        modifier = Modifier.size(50.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -67,38 +74,23 @@ fun HomeScreen() {
                         }
                         Icon(
                             imageVector = Icons.Outlined.LocationOn,
-                            contentDescription = "Location",
+                            contentDescription = null,
                             tint = Color(0xFFFF6D00)
                         )
                     }
                 },
                 title = {
-                    // Column to display delivery info: "Deliver to" and location name
                     Column {
-                        Text(
-                            "Deliver to",
-                            fontSize = 15.sp,
-                            color = Color.Gray
-                        )
+                        Text("Deliver to", fontSize = 15.sp, color = Color.Gray)
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                "Home",
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Icon(
-                                Icons.Default.KeyboardArrowDown,
-                                null
-                            )
+                            Text("Home", fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.KeyboardArrowDown, null)
                         }
                     }
                 },
                 actions = {
-                    // Notifications icon with subtle circle background
                     Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .padding(horizontal = 5.dp),
+                        modifier = Modifier.size(50.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -108,245 +100,140 @@ fun HomeScreen() {
                                 alpha = 0.1f
                             )
                         }
-                        Icon(
-                            Icons.Outlined.Notifications,
-                            null
-                        )
+                        Icon(Icons.Outlined.Notifications, null)
                     }
                 }
             )
         }
     ) { innerPadding ->
-        // Main content area wrapped in vertical scroll
-        Column(
+
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Thin divider line under the TopAppBar
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(color = Color(0xFFEDEDED))
-            )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 15.dp)
-            ) {
-
-                Spacer(modifier = Modifier.height(7.dp))
-
-                // Greeting text
-                Text(
-                    text = "Good Morning, Alex!",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(2.dp))
-
-                // Subheading prompting user
-                Text(
-                    text = "What would you like to eat?",
-                    color = Color.Gray,
-                    fontWeight = FontWeight.W400,
-                    fontSize = 17.sp
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Search bar with icon and placeholder text
+            item {
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(0xFFEDEDED))
+                )
+            }
+
+            item {
+                Column(modifier = Modifier.padding(horizontal = 15.dp)) {
+                    Text(
+                        text = "Good Morning, Alex!",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "What would you like to eat?",
+                        color = Color.Gray,
+                        fontSize = 17.sp
+                    )
+                }
+            }
+
+            item {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
                         .height(50.dp)
-                        .background(
-                            color = Color(0xFFECE5E5),
-                            shape = RoundedCornerShape(25.dp)
-                        ),
+                        .background(Color(0xFFECE5E5), RoundedCornerShape(25.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Row(
-                        modifier = Modifier.padding(10.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = "Search",
-                            tint = Color.Gray
-                        )
-
+                    Row(modifier = Modifier.padding(10.dp)) {
+                        Icon(Icons.Outlined.Search, null, tint = Color.Gray)
                         Spacer(modifier = Modifier.width(8.dp))
-
-                        // BasicTextField for search input
                         BasicTextField(
                             value = searchText,
                             onValueChange = { searchText = it },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.Black
-                            ),
-                            decorationBox = { innerTextField ->
-                                // Placeholder text when search bar is empty
+                            textStyle = TextStyle(fontSize = 16.sp),
+                            decorationBox = { inner ->
                                 if (searchText.isEmpty()) {
                                     Text(
-                                        text = "Search restaurants & dishes...",
-                                        color = Color.DarkGray,
-                                        fontSize = 16.sp
+                                        "Search restaurants & dishes...",
+                                        color = Color.DarkGray
                                     )
                                 }
-                                innerTextField()
+                                inner()
                             }
                         )
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.height(15.dp))
-
-                // Promotional banner with gradient background
+            item {
                 Box(
                     modifier = Modifier
+                        .padding(horizontal = 15.dp)
                         .height(150.dp)
                         .fillMaxWidth()
                         .background(
                             brush = Brush.horizontalGradient(
-                                colors = listOf(
-                                    Color(0xFFFF7A18),
-                                    Color(0xFFFFA94D)
-                                )
+                                listOf(Color(0xFFFF7A18), Color(0xFFFFA94D))
                             ),
                             shape = RoundedCornerShape(30.dp)
                         )
                 ) {
-                    Column(modifier = Modifier.padding(horizontal = 15.dp, vertical = 15.dp)) {
-                        // Discount tag
+                    Column(modifier = Modifier.padding(15.dp)) {
                         Box(
                             modifier = Modifier
-                                .background(
-                                    color = Color(0xFFFFF3E0),
-                                    shape = RoundedCornerShape(50)
-                                )
+                                .background(Color(0xFFFFF3E0), RoundedCornerShape(50))
                                 .padding(horizontal = 14.dp, vertical = 4.dp)
                         ) {
-                            Text(
-                                text = "50% OFF",
-                                color = Color(0xFFFF7A18),
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            Text("50% OFF", color = Color(0xFFFF7A18), fontWeight = FontWeight.Bold)
                         }
-
                         Spacer(modifier = Modifier.height(15.dp))
-
-                        // Main banner title
-                        Text(
-                            text = "Free Delivery Week!",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 30.sp,
-                            color = Color.White
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Banner subtitle / description
-                        Text(
-                            text = "On orders above ₹150. Use code: FREEDEL",
-                            color = Color(0xFFFFF1E6),
-                            fontWeight = FontWeight.W400,
-                            fontSize = 15.sp
-                        )
+                        Text("Free Delivery Week!", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("On orders above ₹150. Use code: FREEDEL", color = Color(0xFFFFF1E6))
                     }
                 }
+            }
 
-                // Section header for categories
+            item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 15.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Categories",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 25.sp
-                    )
-                    Text(
-                        text = "See all",
-                        fontWeight = FontWeight.W400,
-                        color = Color(0xFFFF7A18)
-                    )
+                    Text("Categories", fontSize = 25.sp, fontWeight = FontWeight.SemiBold)
+                    Text("See all", color = Color(0xFFFF7A18))
                 }
+            }
 
-                // Horizontal list of categories using LazyRow
+            item {
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.padding(start = 15.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(categories) { category ->
-                        CategoryItemUI(category) // Composable that displays each category
+                    items(categories) {
+                        CategoryItemUI(it)
                     }
                 }
+            }
 
-                // Section header for popular restaurants
+            item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 20.dp, bottom = 10.dp, start = 10.dp, end = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 15.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Popular Near You",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        text = "See all",
-                        fontWeight = FontWeight.W400,
-                        color = Color(0xFFFF7A18)
-                    )
+                    Text("Popular Near You", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text("See all", color = Color(0xFFFF7A18))
                 }
+            }
 
-                // List of restaurant cards
-                RestaurantCard(
-                    imageRes = R.drawable.chicken_biryani,
-                    name = "Flavours Of India",
-                    rating = "5.0",
-                    cuisine = "Indian • Biryani • Heaven",
-                    time = "20–30 min",
-                    deliveryFee = "Free delivery"
-                )
-                RestaurantCard(
-                    imageRes = R.drawable.kheer,
-                    name = "Meethon Ka Ghar",
-                    rating = "4.8",
-                    cuisine = "Indian • Kheer • Dessert",
-                    time = "10-20 min",
-                    deliveryFee = "₹40 Delivery"
-                )
-                RestaurantCard(
-                    imageRes = R.drawable.chicken_burger,
-                    name = "Burger Palace",
-                    rating = "4.8",
-                    cuisine = "American • Burgers • Fast Food",
-                    time = "20–30 min",
-                    deliveryFee = "₹40 delivery"
-                )
-                RestaurantCard(
-                    imageRes = R.drawable.pizza,
-                    name = "Pizza Paradise",
-                    rating = "4.6",
-                    cuisine = "Italian • Pizza • Pasta",
-                    time = "25–35 min",
-                    deliveryFee = "₹40 delivery"
-                )
+            items(restaurants) {
+                RestaurantCard(it)
             }
         }
     }

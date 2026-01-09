@@ -2,14 +2,27 @@ package com.example.myapplication.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,18 +33,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.model.Restaurant
 
-// Composable to display a restaurant card with image, name, rating, cuisine, time & delivery info
 @Composable
-fun RestaurantCard(
-    imageRes: Int,   // Resource ID of the restaurant image
-    name: String,    // Name of the restaurant
-    rating: String,  // Rating of the restaurant
-    cuisine: String, // Cuisine description
-    time: String,    // Estimated delivery time
-    deliveryFee: String // Delivery fee information
-) {
-    // Card container with rounded corners and elevation
+fun RestaurantCard(restaurant: Restaurant) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -41,21 +46,18 @@ fun RestaurantCard(
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column {
-            // Top image section of the card
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                // Restaurant image filling the box
                 Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = name,
+                    painter = painterResource(id = restaurant.image),
+                    contentDescription = restaurant.name,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
 
-                // Favorite icon (heart) on top-right of the image
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -67,42 +69,40 @@ fun RestaurantCard(
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = null,
-                        modifier = Modifier.alpha(0.5f) // Slight transparency
+                        modifier = Modifier.alpha(0.5f)
                     )
                 }
             }
 
-            // Column for restaurant details below the image
             Column(modifier = Modifier.padding(13.dp)) {
 
-                // Row for restaurant name and rating badge
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Restaurant name
                     Text(
-                        text = name,
+                        text = restaurant.name,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold
                     )
 
-                    // Rating badge with star icon
                     Box(
                         modifier = Modifier
                             .background(Color(0xFFE6F4EA), RoundedCornerShape(12.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Icon(
                                 imageVector = Icons.Filled.Star,
                                 contentDescription = null,
-                                tint = Color(0xFF1BB924) // Green star
+                                tint = Color(0xFF1BB924)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = rating,
+                                text = restaurant.rating.toString(),
                                 fontWeight = FontWeight.W500,
                                 fontSize = 16.sp,
                                 color = Color(0xFF1BB924)
@@ -113,16 +113,14 @@ fun RestaurantCard(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // Cuisine description text
                 Text(
-                    text = cuisine,
+                    text = restaurant.country,
                     color = Color.Gray,
                     fontSize = 14.sp
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // Row for delivery time and fee info
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Outlined.AccessTime,
@@ -131,11 +129,11 @@ fun RestaurantCard(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(time, color = Color.Gray, fontSize = 13.sp)
+                    Text(restaurant.deliveryTime, color = Color.Gray, fontSize = 13.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("•", color = Color.Gray) // Separator dot
+                    Text("•", color = Color.Gray)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(deliveryFee, color = Color.Gray, fontSize = 13.sp)
+                    Text(restaurant.deliveryFee, color = Color.Gray, fontSize = 13.sp)
                 }
             }
         }
